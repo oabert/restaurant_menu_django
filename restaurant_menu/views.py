@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from django.views import generic
-from models import Item
+from .models import Item
 
 
 class MenuList(generic.ListView):
-    queryset = Item.object.order_by('-date_created')  # if add '-' receive reverse order
+    queryset = Item.objects.order_by('-date_created')  # if add '-' receive reverse order
     template_name = 'index.html'
+
+    def get_context_data(self):
+        contex = {'meals': 'Pizza'}
+        return contex
 
 
 class MenuItemDetails(generic.DetailView):
