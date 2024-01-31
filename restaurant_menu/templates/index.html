@@ -5,7 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Index</h1>
-<h3>{{ meals }}</h3>
+    <h1>Restaurant Menu</h1>
+        {% for meal in meals %}
+            <h2>{{ meal.1 }}</h2>
+                {% for meal_row in item_list %}
+                    {% if meal_row.meal_category == meal.0 %}
+                        {% if meal_row.status == 0 %}
+                            <h3><del>{{ meal_row.meal }}</del></h3>
+                            <p>{{ meal_row.description }}</p>
+                        {% else %}
+                            <h4>{{ meal_row.meal }}</h4>
+                            <p>{{ meal_row.description }}</p>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+        {% endfor %}
 </body>
 </html>
