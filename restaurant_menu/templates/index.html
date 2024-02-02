@@ -1,24 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
     <h1>Restaurant Menu</h1>
+    <ul class="list-group list_group-flush">
         {% for meal in meals %}
-            <h2>{{ meal.1 }}</h2>
-                {% for meal_row in item_list %}
-                    {% if meal_row.meal_category == meal.0 %}
-                        {% if meal_row.status == 0 %}
-                            <h3><del>{{ meal_row.meal }}</del></h3>
-                            <p>{{ meal_row.description }}</p>
-                        {% else %}
-                            <h4>{{ meal_row.meal }}</h4>
-                            <p>{{ meal_row.description }}</p>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
+        <h2 class="pt-5">{{ meal.1 }}</h2>
+        {% for meal_row in item_list %}
+        {% if meal_row.meal_category == meal.0 %}
+        {% if meal_row.status == 0 %}
+        <li class="list-group-item d-flex justify-content-between alight-item border-0 pb-0">
+            <a href="{% url 'menu_item' meal_row.pk %}" class="link-secondary text-decoration-none">
+                <h3>
+                    <del>{{ meal_row.meal }}</del>
+                </h3>
+            </a>
+            <div class="text-center">
+                <span class="badge bg-dark rounded-pill-5">$ {{ meal_row.price }} </span>
+                <button type="button" class="btn btn-light">Add to cart</button>
+            </div>
+        </li>
+        <li class="list-group-item pt-0">
+            <p>{{ meal_row.description }}</p>
+        </li>
+        {% else %}
+        <li class="list-group-item d-flex justify-content-between alight-item border-0 pb-0">
+            <a href="{% url 'menu_item' meal_row.pk %}" class="link-secondary text-decoration-none">
+                <h4>{{ meal_row.meal }}</h4>
+            </a>
+            <div class="text-center">
+                <span class="badge bg-dark text-wrap rounded-pill-5">$ {{ meal_row.price }}</span>
+                <button type="button" class="btn btn-light">Add to cart</button>
+            </div>
+        </li>
+
+        <p>{{ meal_row.description }}</p>
+        {% endif %}
+        {% endif %}
         {% endfor %}
-</body>
-</html>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
