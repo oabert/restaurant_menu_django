@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -23,6 +25,27 @@ class Item(models.Model):
     status = models.IntegerField(choices=STATUS, default=1)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    picture = models.ImageField(upload_to='img', default='')
 
     def __str__(self):
         return self.meal
+
+
+class Cart(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id)
+
+
+class CartItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='items')
+    # item = models.ForeignKey(on_delete=models.CASCADE, related_name='items')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cartitems')
+    # cart = models.ForeignKey(on_delete=models.CASCADE, related_name='cartitems')
+    quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.item.meal
